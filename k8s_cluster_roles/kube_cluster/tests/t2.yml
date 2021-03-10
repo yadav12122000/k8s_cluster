@@ -1,0 +1,51 @@
+---
+- hosts: localhost
+  vars:
+    num: 1
+    tag_name: master
+  tasks:
+  - name: launching master
+    include_role:
+     name: awslaunch
+ 
+- hosts: localhost
+  vars:
+     tag_name: worker
+  vars_prompt:
+    - name: num
+      prompt: "Enter the no of slave nodes"
+      private: no
+  tasks: 
+  - name: launch worker node
+    include_role:
+     name: awslaunch
+ 
+
+  - meta: refresh_inventory
+  - pause:
+         seconds: 60
+
+
+- hosts: tag_Name_master
+  gather_facts: no
+  vars:
+     node_name: master
+  tasks:
+  - name: configuring master
+    include_role:
+      name: kube_cluster
+    register: conf_master
+  - debug: 
+     var: conf_master
+
+- hosts: tag_Name_worker
+  gather_facts: no
+  vars:
+    node_name: worker
+  tasks:
+  - name: configuring worker node
+    include_role:
+      name: kube_cluster
+    register: confi_worker
+  - debug:
+      var: confi_worker

@@ -1,0 +1,21 @@
+---
+# tasks file for awslaunch
+- name: os in aws
+  ec2:
+        key_name: "{{ mykey }}"
+        instance_type: "{{ myinstance_type }}"
+        image: "{{ myimage }}"
+        wait: yes
+        count: "{{ num }}"
+        instance_tags:
+                Name: "{{ tag_name }}"
+        vpc_subnet_id: "{{ myvpc_subnet_id }}"
+        assign_public_ip: yes
+        region: "{{ myregion }}"
+        state: present
+        group_id: "{{ mygroup_id }}"
+        aws_access_key: "{{ myaccesskey }}"
+        aws_secret_key: "{{ mysecretkey }}"
+  register: x
+- debug:
+        var: x.instances[0].public_ip
