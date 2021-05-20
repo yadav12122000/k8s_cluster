@@ -1,7 +1,7 @@
-Role Name
+K8s_cluster
 =========
 
-A brief description of the role goes here.
+Launch k8s multi-node cluster.
 
 Requirements
 ------------
